@@ -45,15 +45,15 @@ function! s:show_3match()
 endfunction
 
 function! s:hide_1match()
-  match
+  1match none
 endfunction
 
 function! s:hide_2match()
-  2match
+  2match none
 endfunction
 
 function! s:hide_3match()
-  3match
+  3match none
   if s:disabled_matchparen
     if !exists("g:loaded_matchparen")
       DoMatchParen
