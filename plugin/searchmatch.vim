@@ -105,6 +105,33 @@ function! s:reset_match()
   endif
 endfunction
 
+function! s:operator(type, ...)
+    let reg_save = @@
+    let sel_save = &selection
+    let &selection = "inclusive"
+
+    if a:0 " Invoked from Visual mode, use '< and '> marks.
+        silent execute "normal! `<" . a:type . "`>y"
+    elseif a:type ==# 'line'
+        silent execute "normal! `[V`]y"
+    elseif a:type ==# 'block'
+        silent execute "normal! `[<C-V>`]y"
+    else
+        silent execute "normal! `[v`]y"
+    endif
+
+    let patterns = split(@@, '\r\?\n')
+    let patterns = filter(patterns, 'strlen(v:val) > 0')
+    let patterns = map(patterns, 'substitute(v:val, ''^\s*'', "", "g")')
+    let patterns = map(patterns, 'substitute(v:val, ''\s*$'', "", "g")')
+    let patterns = map(patterns, 'substitute(v:val, ''\\'', ''\\\\'', "g")')
+    let pattern = '\V' . join(patterns, '\|')
+    call <SID>rotate_match(pattern)
+
+    let &selection = sel_save
+    let @@ = reg_save
+endfunction
+
 command! Searchmatch1     :call <SID>set_match(1, @/)
 command! Searchmatch2     :call <SID>set_match(2, @/)
 command! Searchmatch3     :call <SID>set_match(3, @/)
@@ -114,10 +141,16 @@ nmap <Plug>Searchmatch1     :Searchmatch1<CR>
 nmap <Plug>Searchmatch2     :Searchmatch2<CR>
 nmap <Plug>Searchmatch3     :Searchmatch3<CR>
 nmap <Plug>SearchmatchReset :SearchmatchReset<CR>
+nmap <Plug>SearchmatchOp    :set operatorfunc=<SID>operator<cr>g@
+vmap <Plug>SearchmatchOp    :<c-u>call <SID>operator(visualmode(), 1)<cr>
 
 if !exists("g:searchmatch_nomap") && mapcheck("<leader>/", "n") == ""
   nmap <leader>/1 <Plug>Searchmatch1
   nmap <leader>/2 <Plug>Searchmatch2
   nmap <leader>/3 <Plug>Searchmatch3
   nmap <leader>/- <Plug>SearchmatchReset
+  nmap <leader>/  <Plug>SearchmatchOp
+  vmap <leader>/  <Plug>SearchmatchOp
+  nmap <leader>// V<Plug>SearchmatchOp
+  nmap <leader>/* <Plug>SearchmatchOpiw
 endif

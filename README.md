@@ -37,6 +37,32 @@ normal mappings for these commands are:
 Additionally the user can run any of the stock match commands (`:match`,
 `:2match`, and `:3match`) to turn off any of the three highlights individually.
 
+## Operator Usage
+
+In addition to the explicit search pinning use pattern, `searchmatch` can also
+function as an operator.  A normal and visual mode mapping is provided at
+`<Plug>SearchmatchOp`.  By default this is mapped to `<leader>/` with
+convenience mappings in `<leader>//` and `<leader>/*`.
+
+The `<leader>/` binding works like any other operator, so `<leader>/<Movement>`
+highlights the text specified by movement (the visual mode mapping simply
+highlights the selected range).
+
+The highlight is set to `1match`, and any pre-existing `searchmatch` highlight
+in `1match` is pushed down to `2match` (correspondingly `2match` -> `3match`).
+
+The specified text is escaped so that any regex special characters are matched
+literally.
+
+The specified text has any leading/trailing white space stripped.
+
+If the specified text spans multiple lines, it is split and each line treated
+as an alternative when constructing the `match` regex.  In this case the
+whitespace striping applies to each line individually.
+
+The `<leader>//` and `<leader>/*` convenience mappings highlight the current
+line and word respectively.
+
 ## Highlighting
 
 The `searchmatch` plugin makes use of `Match1`, `Match2`, and `Match3`
@@ -77,7 +103,7 @@ Otherwise just copy `plugin/searchmatch.vim` into `~/.vim/plugin/searchmatch.vim
 ## TODO
 
 - can do better with the default highlight definitions?
-- other usage patterns, like an operator-pending mapping
+- other usage patterns?
 - fix glitch when calling `NoMatchParen` in `SearchMatch3`
 
 ## License
