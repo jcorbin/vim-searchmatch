@@ -3,9 +3,9 @@
 " URL:        https://github.com/jcorbin/vim-searchmatch
 " Version:    0.9.2
 
-if exists("g:loaded_searchmatch") || &cp
-  finish
-endif
+" if exists("g:loaded_searchmatch") || &cp
+"   finish
+" endif
 let g:loaded_searchmatch = 1
 
 function! s:cased_regex(regex)
@@ -192,7 +192,7 @@ nmap <Plug>SearchmatchToggle :SearchmatchToggle<CR>
 nmap <Plug>SearchmatchOp     :set operatorfunc=<SID>operator<cr>g@
 vmap <Plug>SearchmatchOp     :<c-u>call <SID>operator(visualmode(), 1)<cr>
 
-if !exists("g:searchmatch_nomap") && mapcheck("<leader>/", "n") == ""
+if 1
   nmap <leader>/1 <Plug>Searchmatch1
   nmap <leader>/2 <Plug>Searchmatch2
   nmap <leader>/3 <Plug>Searchmatch3
