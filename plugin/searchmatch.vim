@@ -42,15 +42,10 @@ function! s:hide()
   if !exists("w:searchmatch_matches")
     return
   endif
-  call <SID>hide_matches()
-  if has_key(w:searchmatch_matches, 1)
-    unlet w:searchmatch_matches[1]
-  endif
-  if has_key(w:searchmatch_matches, 2)
-    unlet w:searchmatch_matches[2]
-  endif
-  if has_key(w:searchmatch_matches, 3)
-    unlet w:searchmatch_matches[3]
+  if <SID>is_shown()
+    " TODO: this should come after, but matchparen hilarity
+    let w:searchmatch_matches['shown'] = 0
+    call <SID>hide_matches()
   endif
 endfunction
 
