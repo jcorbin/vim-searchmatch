@@ -44,6 +44,24 @@ function! s:show_3match()
   endif
 endfunction
 
+function! s:hide_1match()
+  match
+endfunction
+
+function! s:hide_2match()
+  2match
+endfunction
+
+function! s:hide_3match()
+  3match
+  if s:disabled_matchparen
+    if !exists("g:loaded_matchparen")
+      DoMatchParen
+    endif
+    let s:disabled_matchparen = 0
+  endif
+endfunction
+
 function! s:set_match(n, regex)
   let pattern = <SID>cased_regex(a:regex)
   let pattern = '/' . substitute(pattern, '/', '\/', 'g') . '/'
@@ -76,24 +94,18 @@ function! s:reset_match()
   endif
 
   if has_key(w:searchmatch_matches, 1)
-    match
+    call <SID>hide_1match()
     unlet w:searchmatch_matches[1]
   endif
 
   if has_key(w:searchmatch_matches, 2)
-    2match
+    call <SID>hide_2match()
     unlet w:searchmatch_matches[2]
   endif
 
   if has_key(w:searchmatch_matches, 3)
-    3match
+    call <SID>hide_3match()
     unlet w:searchmatch_matches[3]
-    if s:disabled_matchparen
-      if !exists("g:loaded_matchparen")
-        DoMatchParen
-      endif
-      let s:disabled_matchparen = 0
-    endif
   endif
 endfunction
 
