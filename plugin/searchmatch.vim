@@ -28,6 +28,18 @@ augroup END
 
 call <SID>setup_highlight_defaults()
 
+function! s:hide_matches()
+  if has_key(w:searchmatch_matches, 1)
+    call <SID>hide_1match()
+  endif
+  if has_key(w:searchmatch_matches, 2)
+    call <SID>hide_2match()
+  endif
+  if has_key(w:searchmatch_matches, 3)
+    call <SID>hide_3match()
+  endif
+endfunction
+
 function! s:show_1match()
   execute "1match Match1 " . w:searchmatch_matches[1]
 endfunction
@@ -92,19 +104,17 @@ function! s:reset_match()
   if !exists("w:searchmatch_matches")
     return
   endif
+  call <SID>hide_matches()
 
   if has_key(w:searchmatch_matches, 1)
-    call <SID>hide_1match()
     unlet w:searchmatch_matches[1]
   endif
 
   if has_key(w:searchmatch_matches, 2)
-    call <SID>hide_2match()
     unlet w:searchmatch_matches[2]
   endif
 
   if has_key(w:searchmatch_matches, 3)
-    call <SID>hide_3match()
     unlet w:searchmatch_matches[3]
   endif
 endfunction
