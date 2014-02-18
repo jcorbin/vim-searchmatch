@@ -44,39 +44,19 @@ function! s:show_3match()
   endif
 endfunction
 
-function! s:set_1match(regex)
-  if !exists("w:searchmatch_matches")
-    let w:searchmatch_matches = {}
-  endif
-  let w:searchmatch_matches[1] = a:regex
-  call <SID>show_1match()
-endfunction
-
-function! s:set_2match(regex)
-  if !exists("w:searchmatch_matches")
-    let w:searchmatch_matches = {}
-  endif
-  let w:searchmatch_matches[2] = a:regex
-  call <SID>show_2match()
-endfunction
-
-function! s:set_3match(regex)
-  if !exists("w:searchmatch_matches")
-    let w:searchmatch_matches = {}
-  endif
-  let w:searchmatch_matches[3] = a:regex
-  call <SID>show_3match()
-endfunction
-
 function! s:set_match(n, regex)
   let pattern = <SID>cased_regex(a:regex)
   let pattern = '/' . substitute(pattern, '/', '\/', 'g') . '/'
+  if !exists("w:searchmatch_matches")
+    let w:searchmatch_matches = {}
+  endif
+  let w:searchmatch_matches[a:n] = a:regex
   if a:n == 1
-    call <SID>set_1match(pattern)
+    call <SID>show_1match()
   elseif a:n == 2
-    call <SID>set_2match(pattern)
+    call <SID>show_2match()
   elseif a:n == 3
-    call <SID>set_3match(pattern)
+    call <SID>show_3match()
   endif
 endfunction
 
