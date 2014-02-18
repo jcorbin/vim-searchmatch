@@ -12,6 +12,7 @@ function! s:cased_regex(regex)
   return (&ignorecase ? '\c' : '\C') . a:regex
 endfunction
 
+" TODO: why this not window local too
 if !exists("s:disabled_matchparen")
   let s:disabled_matchparen = 0
 endif
