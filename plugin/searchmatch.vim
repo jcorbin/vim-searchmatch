@@ -68,6 +68,16 @@ function! s:set_match(n, regex)
   endif
 endfunction
 
+function! s:rotate_match(regex)
+  if exists("w:searchmatch_matches") && has_key(w:searchmatch_matches, 1)
+    if has_key(w:searchmatch_matches, 2)
+      call <SID>set_3match(w:searchmatch_matches[2])
+    endif
+    call <SID>set_2match(w:searchmatch_matches[1])
+  endif
+  call <SID>set_match(1, a:regex)
+endfunction
+
 function! s:reset_match()
   if !exists("w:searchmatch_matches")
     return
