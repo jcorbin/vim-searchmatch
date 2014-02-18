@@ -28,6 +28,22 @@ augroup END
 
 call <SID>setup_highlight_defaults()
 
+function! s:hide()
+  if !exists("w:searchmatch_matches")
+    return
+  endif
+  call <SID>hide_matches()
+  if has_key(w:searchmatch_matches, 1)
+    unlet w:searchmatch_matches[1]
+  endif
+  if has_key(w:searchmatch_matches, 2)
+    unlet w:searchmatch_matches[2]
+  endif
+  if has_key(w:searchmatch_matches, 3)
+    unlet w:searchmatch_matches[3]
+  endif
+endfunction
+
 function! s:hide_matches()
   if has_key(w:searchmatch_matches, 1)
     call <SID>hide_1match()
@@ -100,25 +116,6 @@ function! s:rotate_match(regex)
   call <SID>set_match(1, a:regex)
 endfunction
 
-function! s:reset_match()
-  if !exists("w:searchmatch_matches")
-    return
-  endif
-  call <SID>hide_matches()
-
-  if has_key(w:searchmatch_matches, 1)
-    unlet w:searchmatch_matches[1]
-  endif
-
-  if has_key(w:searchmatch_matches, 2)
-    unlet w:searchmatch_matches[2]
-  endif
-
-  if has_key(w:searchmatch_matches, 3)
-    unlet w:searchmatch_matches[3]
-  endif
-endfunction
-
 function! s:operator(type, ...)
     let reg_save = @@
     let sel_save = &selection
@@ -149,7 +146,7 @@ endfunction
 command! Searchmatch1     :call <SID>set_match(1, @/)
 command! Searchmatch2     :call <SID>set_match(2, @/)
 command! Searchmatch3     :call <SID>set_match(3, @/)
-command! SearchmatchReset :call <SID>reset_match()
+command! SearchmatchReset :call <SID>hide()
 
 nmap <Plug>Searchmatch1     :Searchmatch1<CR>
 nmap <Plug>Searchmatch2     :Searchmatch2<CR>
