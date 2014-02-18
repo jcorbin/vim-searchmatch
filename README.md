@@ -22,17 +22,17 @@ match2, and `/highlight` pinned to match3.  The colorscheme is a modified
 ## Basic Usage
 
 The plugin defines 4 basic commands:
-- `Searchmatch1`     -- sets the current search as first match
-- `Searchmatch2`     -- sets the current search as second match
-- `Searchmatch3`     -- sets the current search as third match
-- `SearchmatchReset` -- clears all matches set by the `searchmatch` plugin
+- `Searchmatch1`      -- sets the current search as first match
+- `Searchmatch2`      -- sets the current search as second match
+- `Searchmatch3`      -- sets the current search as third match
+- `SearchmatchToggle` -- hides/shows any matches set by the above
 
 Unless you've already defined a mapping for `<leader>/`, then the default
 normal mappings for these commands are:
 - `<leader>/1` -- calls Searchmatch1
 - `<leader>/2` -- calls Searchmatch2
 - `<leader>/3` -- calls Searchmatch3
-- `<leader>/-` -- calls SearchmatchReset
+- `<leader>/-` -- calls SearchmatchToggle
 
 Additionally the user can run any of the stock match commands (`:match`,
 `:2match`, and `:3match`) to turn off any of the three highlights individually.
@@ -88,8 +88,8 @@ notion of this plugin is to give the user as much direct control over as much
 match highlighting as possible.
 
 So the `SearchMatch3` command will first disable the `matchparen` plugin if it
-is loaded.  Correspondingly the `SearchMatchReset` command will reload the
-`matchparen` plugin if `SearchMatch3` unloaded it.
+is loaded.  Correspondingly, the `SearchMatchToggle` command will reload/unload
+the `matchparen` plugin as appropriate when a `3match` highlight is defined.
 
 ## Installation
 

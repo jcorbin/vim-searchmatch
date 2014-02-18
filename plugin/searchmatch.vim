@@ -38,6 +38,14 @@ function! s:is_shown()
   return w:searchmatch_matches['shown']
 endfunction
 
+function! s:toggle()
+  if <SID>is_shown()
+    call <SID>hide()
+  else
+    call <SID>show()
+  endif
+endfunction
+
 function! s:show()
   if !exists("w:searchmatch_matches")
     return
@@ -171,23 +179,23 @@ function! s:operator(type, ...)
     let @@ = reg_save
 endfunction
 
-command! Searchmatch1     :call <SID>set_match(1, @/)
-command! Searchmatch2     :call <SID>set_match(2, @/)
-command! Searchmatch3     :call <SID>set_match(3, @/)
-command! SearchmatchReset :call <SID>hide()
+command! Searchmatch1      :call <SID>set_match(1, @/)
+command! Searchmatch2      :call <SID>set_match(2, @/)
+command! Searchmatch3      :call <SID>set_match(3, @/)
+command! SearchmatchToggle :call <SID>toggle()
 
-nmap <Plug>Searchmatch1     :Searchmatch1<CR>
-nmap <Plug>Searchmatch2     :Searchmatch2<CR>
-nmap <Plug>Searchmatch3     :Searchmatch3<CR>
-nmap <Plug>SearchmatchReset :SearchmatchReset<CR>
-nmap <Plug>SearchmatchOp    :set operatorfunc=<SID>operator<cr>g@
-vmap <Plug>SearchmatchOp    :<c-u>call <SID>operator(visualmode(), 1)<cr>
+nmap <Plug>Searchmatch1      :Searchmatch1<CR>
+nmap <Plug>Searchmatch2      :Searchmatch2<CR>
+nmap <Plug>Searchmatch3      :Searchmatch3<CR>
+nmap <Plug>SearchmatchToggle :SearchmatchToggle<CR>
+nmap <Plug>SearchmatchOp     :set operatorfunc=<SID>operator<cr>g@
+vmap <Plug>SearchmatchOp     :<c-u>call <SID>operator(visualmode(), 1)<cr>
 
 if !exists("g:searchmatch_nomap") && mapcheck("<leader>/", "n") == ""
   nmap <leader>/1 <Plug>Searchmatch1
   nmap <leader>/2 <Plug>Searchmatch2
   nmap <leader>/3 <Plug>Searchmatch3
-  nmap <leader>/- <Plug>SearchmatchReset
+  nmap <leader>/- <Plug>SearchmatchToggle
   nmap <leader>/  <Plug>SearchmatchOp
   vmap <leader>/  <Plug>SearchmatchOp
   nmap <leader>// V<Plug>SearchmatchOp
