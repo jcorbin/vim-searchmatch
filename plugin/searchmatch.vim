@@ -28,32 +28,44 @@ augroup END
 
 call <SID>setup_highlight_defaults()
 
+function! s:show_1match()
+  execute "1match Match1 " . w:searchmatch_matches[1]
+endfunction
+
+function! s:show_2match()
+  execute "2match Match2 " . w:searchmatch_matches[2]
+endfunction
+
+function! s:show_3match()
+  execute "3match Match3 " . w:searchmatch_matches[3]
+  if exists("g:loaded_matchparen")
+    let s:disabled_matchparen = 1
+    NoMatchParen
+  endif
+endfunction
+
 function! s:set_1match(regex)
   if !exists("w:searchmatch_matches")
     let w:searchmatch_matches = {}
   endif
-  execute "1match Match1 " . a:regex
   let w:searchmatch_matches[1] = a:regex
+  call <SID>show_1match()
 endfunction
 
 function! s:set_2match(regex)
   if !exists("w:searchmatch_matches")
     let w:searchmatch_matches = {}
   endif
-  execute "2match Match2 " . a:regex
   let w:searchmatch_matches[2] = a:regex
+  call <SID>show_2match()
 endfunction
 
 function! s:set_3match(regex)
   if !exists("w:searchmatch_matches")
     let w:searchmatch_matches = {}
   endif
-  execute "3match Match3 " . a:regex
   let w:searchmatch_matches[3] = a:regex
-  if exists("g:loaded_matchparen")
-    let s:disabled_matchparen = 1
-    NoMatchParen
-  endif
+  call <SID>show_3match()
 endfunction
 
 function! s:set_match(n, regex)
