@@ -28,6 +28,16 @@ augroup END
 
 call <SID>setup_highlight_defaults()
 
+function! s:is_shown()
+  if !exists("w:searchmatch_matches")
+    return -1
+  endif
+  if !has_key(w:searchmatch_matches, 'shown')
+    let w:searchmatch_matches['shown'] = has_key(w:searchmatch_matches, 1) || has_key(w:searchmatch_matches, 2) || has_key(w:searchmatch_matches, 3)
+  endif
+  return w:searchmatch_matches['shown']
+endfunction
+
 function! s:hide()
   if !exists("w:searchmatch_matches")
     return
