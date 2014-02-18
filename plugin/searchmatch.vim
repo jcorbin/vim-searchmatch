@@ -38,6 +38,17 @@ function! s:is_shown()
   return w:searchmatch_matches['shown']
 endfunction
 
+function! s:show()
+  if !exists("w:searchmatch_matches")
+    return
+  endif
+  if !<SID>is_shown()
+    " TODO: this should come after, but matchparen hilarity
+    let w:searchmatch_matches['shown'] = 1
+    call <SID>show_matches()
+  endif
+endfunction
+
 function! s:hide()
   if !exists("w:searchmatch_matches")
     return
@@ -46,6 +57,18 @@ function! s:hide()
     " TODO: this should come after, but matchparen hilarity
     let w:searchmatch_matches['shown'] = 0
     call <SID>hide_matches()
+  endif
+endfunction
+
+function! s:show_matches()
+  if has_key(w:searchmatch_matches, 1)
+    call <SID>show_1match()
+  endif
+  if has_key(w:searchmatch_matches, 2)
+    call <SID>show_2match()
+  endif
+  if has_key(w:searchmatch_matches, 3)
+    call <SID>show_3match()
   endif
 endfunction
 
