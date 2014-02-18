@@ -29,6 +29,8 @@ augroup END
 
 call <SID>setup_highlight_defaults()
 
+" TODO: ability to remove matches
+
 function! s:is_shown()
   if !exists("w:searchmatch_matches")
     return -1
